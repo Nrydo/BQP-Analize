@@ -5,6 +5,7 @@
 #include "methods/brute_force.h"
 #include "methods/local_search.h"
 #include "methods/greedy.h"
+#include "methods/simulated_annealing.h"
 
 void runExperiments() {
     std::ofstream report_file("report.csv");
@@ -42,6 +43,13 @@ void runExperiments() {
             end = std::chrono::high_resolution_clock::now();
             duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
             report_file << n << "," << instance << ",Greedy," << gr_value << "," << duration.count() << "\n";
+
+            // Simulated Annealing
+            start = std::chrono::high_resolution_clock::now();
+            auto [sa_solution, sa_value] = SimulatedAnnealing::Solve(Q, 1000.0, 0.995, 10000, seed);
+            end = std::chrono::high_resolution_clock::now();
+            duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+            report_file << n << "," << instance << ",SimulatedAnnealing," << sa_value << "," << duration.count() << "\n";
             
             std::cout << "Completed n=" << n << " instance=" << instance << std::endl;
         }
