@@ -4,6 +4,7 @@
 #include "matrix_utils.h"
 #include "methods/brute_force.h"
 #include "methods/local_search.h"
+#include "methods/greedy.h"
 
 void runExperiments() {
     std::ofstream report_file("report.csv");
@@ -34,6 +35,13 @@ void runExperiments() {
             auto end = std::chrono::high_resolution_clock::now();
             auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
             report_file << n << "," << instance << ",LocalSearch," << ls_value << "," << duration.count() << "\n";
+
+            // Greedy
+            start = std::chrono::high_resolution_clock::now();
+            auto [gr_solution, gr_value] = Greedy::Solve(Q);
+            end = std::chrono::high_resolution_clock::now();
+            duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+            report_file << n << "," << instance << ",Greedy," << gr_value << "," << duration.count() << "\n";
             
             std::cout << "Completed n=" << n << " instance=" << instance << std::endl;
         }
