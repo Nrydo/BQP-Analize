@@ -6,6 +6,7 @@
 #include "methods/local_search.h"
 #include "methods/greedy.h"
 #include "methods/simulated_annealing.h"
+#include "methods/grasp.h"
 
 void runExperiments() {
     std::ofstream report_file("report.csv");
@@ -51,6 +52,13 @@ void runExperiments() {
             duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
             report_file << n << "," << instance << ",SimulatedAnnealing," << sa_value << "," << duration.count() << "\n";
             
+            // GRASP
+            start = std::chrono::high_resolution_clock::now();
+            auto [grasp_solution, grasp_value] = GRASP::Solve(Q, 100, 0.3, seed);
+            end = std::chrono::high_resolution_clock::now();
+            duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+            report_file << n << "," << instance << ",GRASP," << grasp_value << "," << duration.count() << "\n";
+
             std::cout << "Completed n=" << n << " instance=" << instance << std::endl;
         }
     }
